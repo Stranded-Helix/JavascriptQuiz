@@ -36,7 +36,7 @@ var questions = [
 
     {
         question: "Inside which HTML element do we put the JavaScript?",
-        answers: ["<scripting>", "<script>", "<javascript>", "<js>"],
+        answers: ["scripting", "script", "javascript", "js"],
         correctAnswer: 1
     },
     {
@@ -50,7 +50,7 @@ var questions = [
         correctAnswer: 3
     },
     {
-        question: "Using the square brackets [ ] creates what?",
+        question: "Using the square brackets [ ] in a variablee creates what?",
         answers: ["Function", "Object", "Array", "Font"],
         correctAnswer: 2
     },
