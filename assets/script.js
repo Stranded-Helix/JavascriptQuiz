@@ -1,35 +1,10 @@
 var questionsAsked = 0;
 var questionsCorrect = 0;
-clock = 90;
+var clock = 90;
+var timer;
 var timerCount = document.getElementById("timer-count");
 var viewportDiv = document.querySelector(".viewport");
 var startBtn = document.getElementById("start");
-
-startBtn.addEventListener("click", function() {
-    startGame(questions);
-})
-//event delagate to handle correct answers
-viewportDiv.addEventListener("click", function(event){
-    //event delegation without jquery only activating when a button is clicked
-    if(event.target.classList.contains("btn-answer")){
-        //check if the answer was correct.
-        if(event.target.value === "correct")
-        //answer is correct
-        console.log("Correct!");
-        //if the answer is wrong
-        else {
-            console.log("Wrong. Lose 5 seconds")
-            clock = clock - 5;
-            timerCount.textContent = clock;
-        }
-        //check for end of questions
-        questionsAsked++
-        if(questionsAsked < questions.length){
-            displayQuestion(questions[questionsAsked]);
-        }
-    }
-
-})
 
 //array of questions, answers, and correct answer
 var questions = [
@@ -101,7 +76,7 @@ function createButton(string){
 
 function startGame(array) {
     displayQuestion(questions[0])
-    var timer = setInterval(function(){
+        timer = setInterval(function(){
         if(clock <= 0){
             timer.clearInterval();
             gameEnd();
@@ -114,7 +89,53 @@ function startGame(array) {
     
 }
 
-function gameEnd() {
-    //fix to have winning logic or losing logic
+function gameEnd(bool) {
+    while(viewportDiv.firstChild)
+    {
+        viewportDiv.removeChild(viewportDiv.firstChild);
+    }
+    clearInterval(timer);
+    var gameOver = document.createElement("div");
+    var form = document.createElement("input");
+    form.classList.add("intials-form");
+    if(bool) {
+        gameOver.textContent = "Congratulations, Enter your intials to add to the High Scores"
+        gameOver.append(form);
+    }
+    else {
+        gameOver.textContent = "GAME OVER";
+    }
+    viewportDiv.append(gameOver);
     console.log("Game Over")
 }
+
+//Event Listeners
+startBtn.addEventListener("click", function() {
+    startGame(questions);
+})
+//event delagate to handle correct answers
+viewportDiv.addEventListener("click", function(event){
+    //event delegation without jquery only activating when a button is clicked
+    if(event.target.classList.contains("btn-answer")){
+        //check if the answer was correct.
+        if(event.target.value === "correct")
+        //answer is correct
+        console.log("Correct!");
+        //if the answer is wrong
+        else {
+            console.log("Wrong. Lose 5 seconds")
+            clock = clock - 5;
+            timerCount.textContent = clock;
+        }
+        //check for end of questions
+        questionsAsked++
+        if(questionsAsked < questions.length){
+            displayQuestion(questions[questionsAsked]);
+        }
+        else {
+            //call game win function
+            gameEnd(true);
+        }
+    }
+
+})
